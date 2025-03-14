@@ -1,0 +1,43 @@
+services:
+
+  postgres:
+    image: postgres:17
+    container_name: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+    networks:
+      - mdm-network
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  mdm-service:
+    build: .
+    container_name: mdm-service
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: mysecretpassword
+      SPRING_LIQUIBASE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_LIQUIBASE_USER: postgres
+      SPRING_LIQUIBASE_PASSWORD: mysecretpassword
+    ports:
+      - "8080:8080"
+    networks:
+      - mdm-network
+
+networks:
+  mdm-network:
+    driver: bridge

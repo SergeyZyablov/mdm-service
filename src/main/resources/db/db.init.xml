@@ -1,0 +1,23 @@
+<?xml version='1.1' encoding='UTF-8' standalone='no'?>
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd'>
+
+    <changeSet id="db-init" author="sergey.zyablov">
+        <preConditions>
+            <not>
+                <tableExists tableName="device"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE device
+            (
+                id          BIGSERIAL PRIMARY KEY,
+                device_id   BIGINT       NOT NULL UNIQUE,
+                device_name VARCHAR(255) NOT NULL,
+                status      VARCHAR(50)  NOT NULL,
+                created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>

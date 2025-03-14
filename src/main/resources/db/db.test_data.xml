@@ -1,0 +1,24 @@
+<?xml version='1.1' encoding='UTF-8' standalone='no'?>
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd'>
+
+    <changeSet id="db-test-data" author="sergey.zyablov">
+        <preConditions>
+                <tableExists tableName="device"/>
+        </preConditions>
+        <sql>
+            INSERT INTO device (device_id, device_name, status)
+            VALUES (1001, 'Device A', 'ACTIVE'),
+                   (1002, 'Device B', 'BLOCKED'),
+                   (1003, 'Device C', 'ACTIVE'),
+                   (1004, 'Device D', 'BLOCKED'),
+                   (1005, 'Device E', 'ACTIVE'),
+                   (1006, 'Device F', 'BLOCKED'),
+                   (1007, 'Device G', 'ACTIVE'),
+                   (1008, 'Device H', 'BLOCKED'),
+                   (1009, 'Device I', 'ACTIVE'),
+                   (1010, 'Device J', 'BLOCKED');
+        </sql>
+    </changeSet>
+</databaseChangeLog>
