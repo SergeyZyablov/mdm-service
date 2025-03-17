@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.test.mdm.entity.Status.ACTIVE;
+import static com.test.mdm.util.Constant.DEVICE_WITH_DEVICE_ID_NOT_FOUND;
+import static com.test.mdm.util.Constant.DEVICE_WITH_ID_NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
@@ -53,7 +55,7 @@ class DeviceServiceTest {
 
         assertThatThrownBy(() -> deviceService.getDevicesByDeviceId(deviceId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessage(String.format(DeviceService.DEVICE_WITH_DEVICE_ID_NOT_FOUND, deviceId));
+                .hasMessage(String.format(DEVICE_WITH_DEVICE_ID_NOT_FOUND, deviceId));
         verify(deviceRepository, times(1)).findByDeviceId(deviceId);
     }
 
@@ -93,7 +95,7 @@ class DeviceServiceTest {
 
         assertThatThrownBy(() -> deviceService.getDeviceById(id))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessage(String.format(DeviceService.DEVICE_WITH_ID_NOT_FOUND, id));
+                .hasMessage(String.format(DEVICE_WITH_ID_NOT_FOUND, id));
         verify(deviceRepository, times(1)).findById(id);
     }
 
@@ -146,7 +148,7 @@ class DeviceServiceTest {
 
         assertThatThrownBy(() -> deviceService.updateDevice(id, deviceRequest))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessage(String.format(DeviceService.DEVICE_WITH_ID_NOT_FOUND, id));
+                .hasMessage(String.format(DEVICE_WITH_ID_NOT_FOUND, id));
         verify(deviceRepository, times(1)).findById(id);
     }
 
@@ -178,7 +180,7 @@ class DeviceServiceTest {
 
         assertThatThrownBy(() -> deviceService.updateDeviceStatus(id, updateDeviceStatusRequest))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessage(String.format(DeviceService.DEVICE_WITH_ID_NOT_FOUND, id));
+                .hasMessage(String.format(DEVICE_WITH_ID_NOT_FOUND, id));
         verify(deviceRepository, times(1)).findById(id);
     }
 
@@ -201,7 +203,7 @@ class DeviceServiceTest {
 
         assertThatThrownBy(() -> deviceService.deleteDevice(id))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessage(String.format(DeviceService.DEVICE_WITH_ID_NOT_FOUND, id));
+                .hasMessage(String.format(DEVICE_WITH_ID_NOT_FOUND, id));
         verify(deviceRepository, times(1)).findById(id);
     }
 

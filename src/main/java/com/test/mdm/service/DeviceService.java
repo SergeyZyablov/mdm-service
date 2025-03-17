@@ -14,13 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.test.mdm.util.Constant.*;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class DeviceService {
-
-    public static final String DEVICE_WITH_ID_NOT_FOUND = "Device with id %s not found";
-    public static final String DEVICE_WITH_DEVICE_ID_NOT_FOUND = "Device with deviceId %s not found";
 
     private final DeviceRepository deviceRepository;
 
@@ -46,7 +45,9 @@ public class DeviceService {
     @Transactional
     public DeviceDto createDevice(DeviceRequest deviceRequest) {
         DeviceEntity device = deviceRequest.toDeviceEntity(new DeviceEntity());
-        return deviceRepository.save(device).toDto();
+        DeviceDto savedDevice = deviceRepository.save(device).toDto();
+        log.info("Created new device: {}", savedDevice);
+        return savedDevice;
     }
 
     @Transactional
@@ -54,7 +55,9 @@ public class DeviceService {
         DeviceEntity device = AssertUtil.notNull(deviceRepository.findById(id),
                 String.format(DEVICE_WITH_ID_NOT_FOUND, id));
         device = createDeviceRequest.toDeviceEntity(device);
-        return deviceRepository.save(device).toDto();
+        DeviceDto savedDevice = deviceRepository.save(device).toDto();
+        log.info(DEVICE_SUCCESSFULLY_UPDATED, savedDevice.getId(), savedDevice);
+        return savedDevice;
     }
 
     @Transactional
@@ -62,7 +65,9 @@ public class DeviceService {
         DeviceEntity device = AssertUtil.notNull(deviceRepository.findById(id),
                 String.format(DEVICE_WITH_ID_NOT_FOUND, id));
         device.setStatus(Status.valueOf(updateDeviceStatusRequest.getStatus()));
-        return deviceRepository.save(device).toDto();
+        DeviceDto savedDevice = deviceRepository.save(device).toDto();
+        log.info(DEVICE_STATUS_SUCCESSFULLY_UPDATED, savedDevice.getId(), savedDevice.getStatus());
+        return savedDevice;
     }
 
     @Transactional
@@ -70,5 +75,6 @@ public class DeviceService {
         DeviceEntity device = AssertUtil.notNull(deviceRepository.findById(id),
                 String.format(DEVICE_WITH_ID_NOT_FOUND, id));
         deviceRepository.delete(device);
+        log.info(DEVICE_DELETED, id);
     }
 }
